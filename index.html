@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>DESIGN 1 | NEO-NIGHT · Cyberpunk Game Download</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
+      background: #0a0c12;
+      overflow-x: hidden;
+    }
+
+    /* ========== DESIGN 1: "NEO-NIGHT / CYBERPUNK EDGE" ========== */
+    .design-one {
+      background: radial-gradient(circle at 20% 30%, #0b0e1a, #020408);
+      position: relative;
+      overflow: hidden;
+      padding: 4rem 2rem 5rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* glitchy tech grid lines */
+    .design-one::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        repeating-linear-gradient(0deg, rgba(0, 242, 255, 0.08) 0px, rgba(0, 242, 255, 0.08) 2px, transparent 2px, transparent 8px),
+        repeating-linear-gradient(90deg, rgba(255, 0, 212, 0.05) 0px, rgba(255, 0, 212, 0.05) 1px, transparent 1px, transparent 12px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* scanning line effect */
+    .design-one::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(0deg, transparent 0%, rgba(0,242,255,0.02) 50%, transparent 100%);
+      pointer-events: none;
+      animation: scanMove 8s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes scanMove {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .design-one .content {
+      position: relative;
+      z-index: 2;
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .design-one .badge {
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: rgba(0, 242, 255, 0.2);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+      padding: 0.3rem 1rem;
+      border-radius: 30px;
+      color: #0ef;
+      border: 1px solid #0ef;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 8px rgba(0,242,255,0.3);
+    }
+
+    .design-one h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF, #00f2ff, #ff00d4);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 12px rgba(0,242,255,0.4);
+      margin-bottom: 0.75rem;
+    }
+
+    .design-one .sub {
+      color: #b0c4de;
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin-bottom: 2rem;
+      border-left: 3px solid #0ef;
+      padding-left: 1rem;
+    }
+
+    /* game card (design 1) */
+    .game-card-1 {
+      display: flex;
+      flex-wrap: wrap;
+      background: rgba(10, 20, 30, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      border: 1px solid rgba(0, 242, 255, 0.4);
+      overflow: hidden;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.6), 0 0 15px rgba(0,242,255,0.2);
+      transition: transform 0.25s ease, box-shadow 0.3s;
+    }
+
+    .game-card-1:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 30px 40px -15px black, 0 0 25px #00f2ff70;
+    }
+
+    .card-img-1 {
+      flex: 1;
+      min-width: 240px;
+      background: linear-gradient(145deg, #11161f, #03060c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card-img-1 i {
+      font-size: 9rem;
+      color: #0ef;
+      filter: drop-shadow(0 0 12px cyan);
+      transition: 0.2s;
+    }
+
+    .card-info-1 {
+      flex: 2;
+      padding: 2rem;
+    }
+
+    .card-info-1 h2 {
+      font-size: 2rem;
+      color: white;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-info-1 .genre {
+      display: inline-block;
+      background: #ff00d420;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      color: #ff99f0;
+      margin-bottom: 1rem;
+      border: 0.5px solid #ff66cc;
+    }
+
+    .card-info-1 p {
+      color: #cdd9ff;
+      margin: 0.8rem 0;
+      line-height: 1.5;
+    }
+
+    .version {
+      font-family: monospace;
+      color: #0ef;
+      background: #0a1424;
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin: 0.5rem 0;
+    }
+
+    .download-btn-1 {
+      background: linear-gradient(95deg, #00ccff, #aa00ff);
+      border: none;
+      padding: 0.9rem 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 60px;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 1rem;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .download-btn-1:hover {
+      transform: scale(1.02);
+      background: linear-gradient(95deg, #22e6ff, #c244ff);
+      box-shadow: 0 0 18px cyan;
+    }
+
+    /* toast notification */
+    .toast-notify {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e1f2ccc;
+      backdrop-filter: blur(18px);
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      pointer-events: none;
+      font-size: 0.95rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .toast-notify.show {
+      transform: translateX(-50%) translateY(0px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: #03060b;
+      color: #7e8aa2;
+      font-size: 0.75rem;
+      border-top: 1px solid #1e2a3a;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 780px) {
+      .design-one h1 {
+        font-size: 2.2rem;
+      }
+      .card-info-1 {
+        padding: 1.5rem;
+      }
+      .card-img-1 i {
+        font-size: 5rem;
+      }
+      .design-one {
+        padding: 2rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="design-one">
+  <div class="content">
+    <div class="badge"><i class="fas fa-bolt"></i> LIMITED EDITION · DIGITAL ELITE</div>
+    <h1>✦ NIGHTFALL REBOOT ✦</h1>
+    <div class="sub">Neon-drenched combat · Immersive 3D world · Zero latency adrenaline</div>
+
+    <div class="game-card-1">
+      <div class="card-img-1">
+        <i class="fas fa-gamepad"></i>
+      </div>
+      <div class="card-info-1">
+        <h2>CYBER STRIKE: LEGACY</h2>
+        <div class="genre"><i class="fas fa-tag"></i> Action · RPG · Cyberpunk</div>
+        <p>Unleash devastating combos, hack the mainframe, and rewrite reality. Experience next-gen visuals and an original synthwave soundtrack. Includes multiplayer arena and co-op campaign.</p>
+        <div class="version"><i class="far fa-clock"></i> Version 3.2.1 · 12.4 GB</div>
+        <button class="download-btn-1" data-game="Cyber Strike: Legacy" data-design="Neon">
+          <i class="fas fa-download"></i> Download Game (Windows)
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+  <i class="fas fa-shield-alt"></i> DESIGN 1 — Cyberpunk Edition | Secure download simulation
+</footer>
+
+<div id="downloadToast" class="toast-notify">
+  <i class="fas fa-spinner fa-pulse"></i> <span id="toastMessage">Preparing download...</span>
+</div>
+
+<script>
+  (function() {
+    const toastEl = document.getElementById('downloadToast');
+    const toastMsgSpan = document.getElementById('toastMessage');
+    let toastTimeout = null;
+    
+    function showToast(message, isError = false, duration = 2800) {
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastMsgSpan.innerHTML = message;
+      toastEl.classList.add('show');
+      const icon = toastEl.querySelector('i');
+      if (icon) {
+        if (isError) {
+          icon.className = 'fas fa-exclamation-triangle';
+        } else {
+          icon.className = 'fas fa-download';
+        }
+      }
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.remove('show');
+        if (icon && !isError) setTimeout(() => { if(icon) icon.className = 'fas fa-download'; }, 300);
+        else if (icon && isError) setTimeout(() => { if(icon) icon.className = 'fas fa-download'; }, 400);
+      }, duration);
+    }
+    
+    function triggerGameDownload(gameName, designStyle) {
+      showToast(`🚀 Initializing download: ${gameName} ...`, false, 1800);
+      
+      setTimeout(() => {
+        try {
+          const fileContent = `Game: ${gameName}\nEdition: ${designStyle} Design\nRelease: Official Download from DualVerse (DESIGN 1)\nTimestamp: ${new Date().toISOString()}\n--- This is a simulated game installer. In a real scenario, this would be your .exe/.dmg/.zip file. ---\n\nThank you for downloading! Enjoy the experience of ${gameName}.`;
+          const blob = new Blob([fileContent], { type: 'application/octet-stream' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          let safeName = gameName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+          a.download = `${safeName}_setup.exe`;
+          a.href = url;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast(`✅ Download started! ${gameName} saved.`, false, 3000);
+        } catch (err) {
+          console.error(err);
+          showToast(`⚠️ Download error, please try again.`, true, 2800);
+        }
+      }, 800);
+    }
+    
+    const downloadBtn = document.querySelector('.download-btn-1');
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const game = downloadBtn.getAttribute('data-game') || "Cyber Strike: Legacy";
+        const design = downloadBtn.getAttribute('data-design') || "Neon";
+        triggerGameDownload(game, design);
+      });
+      
+      // hover micro interaction
+      downloadBtn.addEventListener('mouseenter', () => {
+        downloadBtn.style.transform = 'scale(1.02)';
+      });
+      downloadBtn.addEventListener('mouseleave', () => {
+        downloadBtn.style.transform = 'scale(1)';
+      });
+    }
+    
+    console.log("DESIGN 1 - Cyberpunk game downloader active");
+  })();
+</script>
+</body>
+</html>
