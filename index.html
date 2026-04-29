@@ -3,44 +3,89 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DEAD ZONE — Escape the Undead</title>
-  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Share+Tech+Mono&family=Oswald:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <title>LOCKDOWN — No Way Out</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --blood: #8b0000;
-      --blood-bright: #cc1a1a;
-      --bile: #4a7c00;
-      --bile-bright: #7abf00;
-      --bone: #d4c9a8;
-      --ash: #1a1a1a;
-      --fog: #2a2a2a;
-      --mist: #3a3a3a;
-      --text: #c8c0a8;
-      --glow-red: 0 0 10px #8b0000, 0 0 30px #5a0000;
-      --glow-green: 0 0 10px #4a7c00, 0 0 30px #2a4a00;
+      --rust:       #8B3A1A;
+      --rust-bright:#C4561F;
+      --rust-dark:  #5A1F08;
+      --iron:       #2C2C2C;
+      --iron-light: #3D3D3D;
+      --steel:      #4A4A4A;
+      --grime:      #1A1710;
+      --soot:       #0D0C09;
+      --tape:       #D4A843;
+      --tape-dark:  #9A7520;
+      --warn:       #F5C518;
+      --text:       #B8AE98;
+      --text-dim:   #6B6455;
+      --bone:       #D6CCBA;
+      --blood:      #6B0F0F;
+      --blood-bright:#9B1A1A;
+      --glow-rust:  0 0 12px #8B3A1A, 0 0 40px rgba(139,58,26,0.4);
+      --glow-warn:  0 0 12px #D4A843, 0 0 40px rgba(212,168,67,0.3);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
-      background-color: var(--ash);
+      background-color: var(--soot);
       color: var(--text);
-      font-family: 'Share Tech Mono', monospace;
+      font-family: 'Barlow Condensed', sans-serif;
       overflow-x: hidden;
       cursor: crosshair;
     }
 
-    /* ── NOISE OVERLAY ── */
+    /* ── GRAIN OVERLAY ── */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.06'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 9999;
-      opacity: 0.4;
+      opacity: 0.6;
+      mix-blend-mode: overlay;
+    }
+
+    /* ── HAZARD TAPE STRIP ── */
+    .hazard-strip {
+      height: 22px;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--warn) 0px,
+        var(--warn) 18px,
+        var(--iron) 18px,
+        var(--iron) 36px
+      );
+      opacity: 0.85;
+    }
+
+    /* ── ALERT BAR ── */
+    .alert-strip {
+      background: var(--blood);
+      color: #fff;
+      text-align: center;
+      padding: 0.45rem 1rem;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.72rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 2px solid var(--blood-bright);
+    }
+
+    .alert-inner {
+      display: inline-block;
+      animation: marquee 20s linear infinite;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(-100%); }
     }
 
     /* ── NAV ── */
@@ -52,16 +97,25 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem 3rem;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent);
-      border-bottom: 1px solid rgba(139,0,0,0.3);
+      background: rgba(13,12,9,0.97);
+      border-bottom: 3px solid var(--rust-dark);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.8);
     }
 
     .nav-logo {
-      font-family: 'Creepster', cursive;
-      font-size: 1.8rem;
-      color: var(--blood-bright);
-      text-shadow: var(--glow-red);
-      letter-spacing: 3px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      color: var(--rust-bright);
+      letter-spacing: 8px;
+      text-shadow: var(--glow-rust);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-logo .lock-icon {
+      font-size: 1.4rem;
+      opacity: 0.9;
     }
 
     .nav-links {
@@ -71,17 +125,20 @@
     }
 
     .nav-links a {
-      color: var(--bone);
+      color: var(--text-dim);
       text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 3px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      transition: color 0.2s, text-shadow 0.2s;
+      transition: color 0.2s;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 2px;
     }
 
     .nav-links a:hover {
-      color: var(--blood-bright);
-      text-shadow: var(--glow-red);
+      color: var(--tape);
+      border-color: var(--tape);
     }
 
     /* ── HERO ── */
@@ -94,204 +151,273 @@
       align-items: center;
       text-align: center;
       overflow: hidden;
-      padding: 6rem 2rem 4rem;
+      padding: 7rem 2rem 14rem;
     }
 
+    /* Game art background image */
     .hero-bg {
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse at 20% 50%, rgba(139,0,0,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 50%, rgba(74,124,0,0.1) 0%, transparent 60%),
-        radial-gradient(ellipse at 50% 100%, rgba(139,0,0,0.2) 0%, transparent 50%),
-        linear-gradient(180deg, #0a0a0a 0%, #141414 50%, #0d0d0d 100%);
+        /* dark overlay so text stays readable */
+        linear-gradient(180deg,
+          rgba(13,12,9,0.55) 0%,
+          rgba(13,12,9,0.3) 35%,
+          rgba(13,12,9,0.5) 65%,
+          rgba(13,12,9,0.92) 100%
+        ),
+        /* rust tint bleed */
+        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(139,58,26,0.15) 0%, transparent 70%),
+        /* your game art */
+        url('assets/BG/LOCKDOWNBG.png') center center / cover no-repeat;
     }
 
-    /* Dripping blood effect */
-    .drip-container {
+    /* Corrugated horizontal lines */
+    .hero-bg::after {
+      content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 80px;
-      display: flex;
-      gap: 0;
-      overflow: hidden;
-    }
-
-    .drip {
-      background: var(--blood);
-      border-radius: 0 0 50% 50%;
-      animation: drip-fall linear infinite;
-      opacity: 0.7;
-    }
-
-    @keyframes drip-fall {
-      0% { transform: scaleY(0); transform-origin: top; }
-      40% { transform: scaleY(1); transform-origin: top; }
-      100% { transform: scaleY(1); transform-origin: top; }
-    }
-
-    .zombie-silhouette {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 300px;
-      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-end;
+      inset: 0;
+      background: repeating-linear-gradient(
+        180deg,
+        transparent 0px,
+        transparent 14px,
+        rgba(0,0,0,0.25) 14px,
+        rgba(0,0,0,0.25) 16px,
+        transparent 16px,
+        transparent 28px,
+        rgba(255,255,255,0.015) 28px,
+        rgba(255,255,255,0.015) 30px
+      );
       pointer-events: none;
     }
 
-    .zom {
-      font-size: 5rem;
-      opacity: 0.15;
-      animation: sway 3s ease-in-out infinite;
-      filter: blur(1px);
+    /* Vertical rebar lines */
+    .rebar {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, transparent, rgba(60,50,40,0.6) 20%, rgba(60,50,40,0.6) 80%, transparent);
+      pointer-events: none;
     }
 
-    .zom:nth-child(2) { animation-delay: 0.5s; font-size: 3.5rem; opacity: 0.1; }
-    .zom:nth-child(3) { animation-delay: 1s; font-size: 6rem; opacity: 0.08; }
-    .zom:nth-child(4) { animation-delay: 1.5s; font-size: 4rem; opacity: 0.12; }
-    .zom:nth-child(5) { animation-delay: 0.8s; font-size: 2.5rem; opacity: 0.09; }
-
-    @keyframes sway {
-      0%, 100% { transform: translateX(0) rotate(-2deg); }
-      50% { transform: translateX(8px) rotate(2deg); }
+    /* Boarded planks across bottom */
+    .planks {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 180px;
+      pointer-events: none;
+      overflow: hidden;
     }
 
-    .hero-eyecatch {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 8px;
-      color: var(--blood-bright);
+    .plank {
+      position: absolute;
+      height: 28px;
+      background: linear-gradient(180deg, #2A1F12, #1E160D, #2A1F12);
+      border-top: 1px solid rgba(80,55,30,0.5);
+      border-bottom: 1px solid rgba(0,0,0,0.5);
+      left: -5%; right: -5%;
+    }
+
+    .plank::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 60px,
+        rgba(0,0,0,0.15) 60px,
+        rgba(0,0,0,0.15) 62px
+      );
+    }
+
+    /* Screw dots on planks */
+    .plank::after {
+      content: '· · · · · · · · · · · · · · · · · · · · · · · · · · · ·';
+      position: absolute;
+      top: 50%; left: 2%;
+      transform: translateY(-50%);
+      color: rgba(60,45,25,0.7);
+      font-size: 0.5rem;
+      letter-spacing: 12px;
+    }
+
+    /* X brace overlay */
+    .x-brace {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      height: 160px;
+      pointer-events: none;
+      opacity: 0.25;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-alert {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      color: var(--tape);
       text-transform: uppercase;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 0.4rem 1.2rem;
+      border: 1px solid rgba(212,168,67,0.3);
+      background: rgba(212,168,67,0.06);
       opacity: 0;
-      animation: fadeInUp 0.8s 0.3s forwards;
+      animation: fadeIn 0.6s 0.3s forwards;
+    }
+
+    .blink {
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--tape);
+      border-radius: 50%;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.6); }
     }
 
     .hero-title {
-      font-family: 'Creepster', cursive;
-      font-size: clamp(4rem, 12vw, 10rem);
-      line-height: 0.9;
-      color: #fff;
-      text-shadow:
-        0 0 20px rgba(139,0,0,0.8),
-        0 0 60px rgba(139,0,0,0.4),
-        4px 4px 0px var(--blood),
-        8px 8px 0px rgba(139,0,0,0.3);
-      letter-spacing: 8px;
-      margin-bottom: 1rem;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(6rem, 18vw, 14rem);
+      line-height: 0.85;
+      color: var(--bone);
+      letter-spacing: 12px;
       position: relative;
-      z-index: 1;
+      text-shadow:
+        6px 6px 0 var(--rust-dark),
+        12px 12px 0 rgba(90,31,8,0.4),
+        0 0 80px rgba(139,58,26,0.2);
       opacity: 0;
-      animation: fadeInUp 0.8s 0.5s forwards;
+      animation: slamIn 0.5s 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
     }
 
-    .hero-subtitle {
-      font-family: 'Creepster', cursive;
-      font-size: clamp(1.2rem, 3vw, 2.5rem);
-      color: var(--bile-bright);
-      text-shadow: var(--glow-green);
-      letter-spacing: 6px;
-      margin-bottom: 2.5rem;
+    /* Rust drip from title */
+    .hero-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px; left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--rust) 30%, var(--rust-bright) 50%, var(--rust) 70%, transparent);
+      box-shadow: var(--glow-rust);
+    }
+
+    @keyframes slamIn {
+      from { opacity: 0; transform: scale(1.15) translateY(-20px); filter: blur(4px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+
+    .hero-tagline {
+      font-family: 'Special Elite', cursive;
+      font-size: clamp(0.9rem, 2vw, 1.3rem);
+      color: var(--rust-bright);
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      margin: 1.5rem 0 2.5rem;
       opacity: 0;
-      animation: fadeInUp 0.8s 0.7s forwards;
+      animation: fadeIn 0.6s 0.9s forwards;
     }
 
     .hero-desc {
-      max-width: 560px;
-      font-size: 0.9rem;
-      line-height: 1.8;
-      color: var(--text);
-      margin-bottom: 3rem;
+      max-width: 520px;
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--text-dim);
+      margin: 0 auto 3rem;
+      font-family: 'Special Elite', cursive;
+      letter-spacing: 0.5px;
       opacity: 0;
-      animation: fadeInUp 0.8s 0.9s forwards;
+      animation: fadeIn 0.6s 1.1s forwards;
     }
 
     .hero-btns {
       display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
+      gap: 1.2rem;
       justify-content: center;
+      flex-wrap: wrap;
       opacity: 0;
-      animation: fadeInUp 0.8s 1.1s forwards;
+      animation: fadeIn 0.6s 1.3s forwards;
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ── BUTTONS ── */
     .btn {
       display: inline-block;
-      padding: 0.85rem 2.2rem;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      letter-spacing: 3px;
+      padding: 0.9rem 2.5rem;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.1rem;
+      letter-spacing: 5px;
       text-transform: uppercase;
       text-decoration: none;
       border: none;
       cursor: pointer;
       transition: all 0.2s;
       position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.2s;
     }
 
     .btn-primary {
-      background: var(--blood);
+      background: var(--rust);
       color: #fff;
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-      box-shadow: var(--glow-red);
+      border: 2px solid var(--rust-bright);
+      box-shadow: 4px 4px 0 var(--rust-dark), var(--glow-rust);
     }
 
     .btn-primary:hover {
-      background: var(--blood-bright);
-      box-shadow: 0 0 20px #8b0000, 0 0 50px #5a0000;
-      transform: translateY(-2px);
+      background: var(--rust-bright);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--rust-dark), 0 0 25px rgba(139,58,26,0.7);
     }
 
     .btn-secondary {
       background: transparent;
-      color: var(--bile-bright);
-      border: 1px solid var(--bile);
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      color: var(--tape);
+      border: 2px solid var(--tape-dark);
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
     }
 
     .btn-secondary:hover {
-      background: rgba(74,124,0,0.15);
-      box-shadow: var(--glow-green);
-      transform: translateY(-2px);
+      background: rgba(212,168,67,0.1);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 rgba(0,0,0,0.5), var(--glow-warn);
     }
 
-    .btn-disabled {
-      background: var(--mist);
-      color: #555;
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    .btn-locked {
+      background: var(--iron);
+      color: var(--text-dim);
+      border: 2px solid var(--steel);
       cursor: not-allowed;
-      border: 1px solid #333;
+      opacity: 0.6;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
     }
 
-    .btn-disabled:hover { transform: none; }
-
-    .soon-badge {
+    .badge-soon {
       display: inline-block;
-      font-size: 0.6rem;
-      background: var(--blood);
-      color: #fff;
+      font-size: 0.55rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      background: var(--rust-dark);
+      color: var(--tape);
       padding: 0.1rem 0.4rem;
       margin-left: 0.5rem;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       vertical-align: middle;
+      border: 1px solid var(--rust);
     }
 
     /* ── SECTION SHARED ── */
@@ -305,409 +431,663 @@
       margin: 0 auto;
     }
 
-    .section-label {
+    /* Rust streak divider */
+    .rust-divider {
+      height: 4px;
+      background: linear-gradient(90deg,
+        transparent,
+        var(--rust-dark) 10%,
+        var(--rust-bright) 40%,
+        var(--rust) 60%,
+        var(--rust-dark) 85%,
+        transparent
+      );
+      margin: 0;
+      opacity: 0.7;
+      position: relative;
+    }
+
+    .rust-divider::after {
+      content: '';
+      position: absolute;
+      top: 4px; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(196,86,31,0.3), transparent);
+    }
+
+    .section-eyebrow {
+      font-family: 'Special Elite', cursive;
       font-size: 0.7rem;
       letter-spacing: 6px;
-      color: var(--blood-bright);
+      color: var(--rust-bright);
       text-transform: uppercase;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.6rem;
       display: flex;
       align-items: center;
       gap: 1rem;
     }
 
-    .section-label::after {
+    .section-eyebrow::after {
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(to right, rgba(139,0,0,0.5), transparent);
-      max-width: 200px;
+      background: linear-gradient(to right, var(--rust-dark), transparent);
+      max-width: 240px;
     }
 
     .section-title {
-      font-family: 'Creepster', cursive;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      color: #fff;
-      letter-spacing: 4px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(3rem, 6vw, 5rem);
+      color: var(--bone);
+      letter-spacing: 6px;
       margin-bottom: 1rem;
-      text-shadow: 3px 3px 0 var(--blood);
+      text-shadow: 4px 4px 0 var(--rust-dark);
     }
 
     /* ── HOW TO PLAY ── */
     #how-to-play {
-      background: linear-gradient(180deg, #0d0d0d, #111);
-      border-top: 1px solid rgba(139,0,0,0.2);
+      background:
+        repeating-linear-gradient(
+          180deg,
+          transparent 0px,
+          transparent 18px,
+          rgba(0,0,0,0.12) 18px,
+          rgba(0,0,0,0.12) 20px
+        ),
+        linear-gradient(180deg, #0f0e0a, #121109);
+      border-top: none;
+    }
+
+    /* Corner warning triangles */
+    #how-to-play::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      border-top: 60px solid var(--warn);
+      border-right: 60px solid transparent;
+      opacity: 0.15;
     }
 
     .gameplay-intro {
-      max-width: 650px;
-      font-size: 0.95rem;
+      max-width: 640px;
+      font-size: 1.05rem;
+      font-weight: 300;
       line-height: 1.9;
-      color: var(--text);
-      margin-bottom: 3rem;
+      color: var(--text-dim);
+      margin-bottom: 3.5rem;
+      font-family: 'Special Elite', cursive;
+      letter-spacing: 0.3px;
     }
 
     .steps-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2px;
       margin-bottom: 4rem;
+      border: 2px solid var(--iron-light);
+      background: var(--iron);
     }
 
     .step-card {
-      background: var(--fog);
-      border: 1px solid rgba(139,0,0,0.2);
-      border-left: 3px solid var(--blood);
-      padding: 1.8rem;
+      background: var(--grime);
+      padding: 2rem 1.8rem;
       position: relative;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      border-right: 2px solid var(--iron-light);
+      transition: background 0.2s;
+      overflow: hidden;
     }
 
-    .step-card:hover {
-      border-color: var(--blood-bright);
-      box-shadow: var(--glow-red);
+    .step-card:last-child { border-right: none; }
+
+    .step-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--rust);
+      transition: width 0.2s;
     }
+
+    .step-card:hover { background: #161410; }
+    .step-card:hover::before { width: 6px; background: var(--rust-bright); }
 
     .step-num {
-      font-family: 'Creepster', cursive;
-      font-size: 3rem;
-      color: rgba(139,0,0,0.3);
+      font-family: 'Bebas Neue', cursive;
+      font-size: 4rem;
+      color: rgba(139,58,26,0.15);
       position: absolute;
-      top: 1rem;
-      right: 1.2rem;
+      top: 0.5rem;
+      right: 1rem;
       line-height: 1;
+      letter-spacing: 2px;
     }
 
-    .step-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .step-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      display: block;
+      filter: grayscale(0.3);
+    }
 
     .step-title {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 2px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
       color: var(--bone);
-      text-transform: uppercase;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.7rem;
     }
 
     .step-desc {
-      font-size: 0.8rem;
-      line-height: 1.7;
-      color: #888;
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-dim);
+      font-family: 'Special Elite', cursive;
     }
 
-    /* Controls */
+    /* ── CONTROLS ── */
     .controls-wrapper {
-      background: var(--fog);
-      border: 1px solid rgba(139,0,0,0.2);
+      background: #0D0C09;
+      border: 2px solid var(--iron-light);
+      border-left: 4px solid var(--tape-dark);
       padding: 2.5rem;
-      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .controls-wrapper::before {
+      content: '// CONTROL PANEL';
+      position: absolute;
+      top: -0.6rem; left: 1.5rem;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--tape-dark);
+      background: #0D0C09;
+      padding: 0 0.5rem;
     }
 
     .controls-title {
-      font-family: 'Oswald', sans-serif;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: var(--bile-bright);
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      margin-bottom: 1.5rem;
+      font-family: 'Bebas Neue', cursive;
+      letter-spacing: 4px;
+      color: var(--tape);
+      font-size: 1rem;
+      margin-bottom: 1.8rem;
     }
 
     .controls-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
+      gap: 1rem 2rem;
     }
 
     .control-item {
       display: flex;
       align-items: center;
       gap: 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(44,44,44,0.8);
     }
 
     .key {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 40px;
-      height: 36px;
+      min-width: 44px;
+      height: 32px;
       padding: 0 8px;
-      background: #0d0d0d;
-      border: 1px solid #444;
-      border-bottom: 3px solid #222;
-      border-radius: 4px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--bone);
+      background: #0a0908;
+      border: 1px solid var(--iron-light);
+      border-bottom: 3px solid #111;
+      border-radius: 2px;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.65rem;
+      color: var(--tape);
       flex-shrink: 0;
+      letter-spacing: 1px;
     }
 
     .control-label {
-      font-size: 0.78rem;
-      color: #777;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 1px;
     }
 
     /* ── DOWNLOAD ── */
     #download {
-      background: #0a0a0a;
-      border-top: 1px solid rgba(139,0,0,0.2);
-      text-align: center;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(139,58,26,0.1) 0%, transparent 60%),
+        linear-gradient(180deg, #0a0908, #0d0c09);
     }
 
     .download-box {
-      background: var(--fog);
-      border: 1px solid rgba(139,0,0,0.3);
-      max-width: 600px;
-      margin: 2rem auto 0;
-      padding: 3rem 2rem;
+      background: var(--grime);
+      border: 2px solid var(--iron-light);
+      max-width: 620px;
+      margin: 3rem auto 0;
+      padding: 3.5rem 3rem;
       position: relative;
-      overflow: hidden;
     }
 
-    .download-box::before {
-      content: '';
+    /* Corner bolts */
+    .download-box::before,
+    .download-box::after {
+      content: '◈';
+      position: absolute;
+      color: var(--rust-dark);
+      font-size: 1rem;
+    }
+
+    .download-box::before { top: 0.6rem; left: 0.8rem; }
+    .download-box::after  { bottom: 0.6rem; right: 0.8rem; }
+
+    .corner-bolt-tr, .corner-bolt-bl {
+      position: absolute;
+      color: var(--rust-dark);
+      font-size: 1rem;
+    }
+    .corner-bolt-tr { top: 0.6rem; right: 0.8rem; }
+    .corner-bolt-bl { bottom: 0.6rem; left: 0.8rem; }
+
+    /* Rust stripe top */
+    .download-box .stripe-top {
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(to right, transparent, var(--blood), transparent);
+      height: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--rust) 0px,
+        var(--rust) 20px,
+        var(--rust-dark) 20px,
+        var(--rust-dark) 40px
+      );
+      opacity: 0.7;
     }
 
     .download-icon {
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin-bottom: 1rem;
-      opacity: 0.6;
+      display: block;
+      opacity: 0.7;
     }
 
-    .download-note {
-      font-size: 0.8rem;
-      color: #555;
-      margin-top: 1.5rem;
-      line-height: 1.6;
+    .download-status {
+      display: inline-block;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      background: rgba(139,58,26,0.2);
+      color: var(--rust-bright);
+      border: 1px solid rgba(139,58,26,0.4);
+      padding: 0.2rem 0.8rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
     }
 
-    .download-note span {
-      color: var(--blood-bright);
+    .download-text {
+      font-size: 0.95rem;
+      font-family: 'Special Elite', cursive;
+      color: var(--text-dim);
+      line-height: 1.8;
+      margin-bottom: 2rem;
     }
 
     .platform-badges {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin: 1.5rem 0;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
       flex-wrap: wrap;
     }
 
-    .badge {
+    .platform-badge {
+      font-family: 'Barlow Condensed', sans-serif;
       font-size: 0.7rem;
       letter-spacing: 2px;
       padding: 0.3rem 0.8rem;
-      border: 1px solid #333;
-      color: #555;
+      border: 1px solid var(--iron-light);
+      color: var(--text-dim);
       text-transform: uppercase;
+    }
+
+    .download-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .download-note {
+      font-size: 0.75rem;
+      font-family: 'Special Elite', cursive;
+      color: var(--text-dim);
+      margin-top: 1.5rem;
+      line-height: 1.7;
+      border-top: 1px solid var(--iron);
+      padding-top: 1.2rem;
+    }
+
+    .download-note strong {
+      color: var(--rust-bright);
     }
 
     /* ── TEAM ── */
     #team {
-      background: linear-gradient(180deg, #0d0d0d, #0a0a0a);
-      border-top: 1px solid rgba(74,124,0,0.15);
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0px,
+          transparent 80px,
+          rgba(0,0,0,0.1) 80px,
+          rgba(0,0,0,0.1) 82px
+        ),
+        linear-gradient(180deg, #0d0c09, #0a0908);
     }
 
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2px;
       margin-top: 3rem;
+      background: var(--iron);
+      border: 2px solid var(--iron-light);
     }
 
     .member-card {
-      background: var(--fog);
-      border: 1px solid rgba(74,124,0,0.2);
-      border-top: 3px solid var(--bile);
-      padding: 2.5rem;
-      transition: box-shadow 0.3s, border-color 0.3s;
+      background: var(--grime);
+      padding: 3rem 2.5rem;
       position: relative;
-      overflow: hidden;
+      transition: background 0.2s;
     }
 
-    .member-card::after {
+    .member-card:hover { background: #141310; }
+
+    /* Rust drip corner */
+    .member-card::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at top left, rgba(74,124,0,0.05), transparent 60%);
-      pointer-events: none;
-    }
-
-    .member-card:hover {
-      box-shadow: var(--glow-green);
-      border-color: var(--bile-bright);
+      top: 0; left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rust) 0%, var(--rust-bright) 30%, var(--rust-dark) 100%);
     }
 
     .member-avatar {
-      width: 80px;
-      height: 80px;
-      background: #111;
-      border: 2px solid var(--bile);
-      border-radius: 50%;
+      width: 76px;
+      height: 76px;
+      background: var(--iron);
+      border: 2px solid var(--rust-dark);
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2rem;
+      font-size: 2rem;
       margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    /* Bolt corners on avatar */
+    .member-avatar::before,
+    .member-avatar::after {
+      content: '·';
+      position: absolute;
+      font-size: 1.2rem;
+      color: var(--rust-dark);
+    }
+    .member-avatar::before { top: -2px; left: -2px; }
+    .member-avatar::after  { bottom: -2px; right: -2px; }
+
+    .placeholder-tag {
+      display: inline-block;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      background: rgba(139,58,26,0.2);
+      color: var(--rust-bright);
+      padding: 0.15rem 0.5rem;
+      margin-bottom: 0.8rem;
+      border: 1px solid rgba(139,58,26,0.35);
+      text-transform: uppercase;
     }
 
     .member-name {
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: #fff;
-      text-transform: uppercase;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 4px;
+      color: var(--bone);
       margin-bottom: 0.3rem;
     }
 
-    /* ── PLACEHOLDER ── */
-    .placeholder-tag {
-      display: inline-block;
-      font-size: 0.6rem;
-      letter-spacing: 2px;
-      background: rgba(139,0,0,0.3);
-      color: var(--blood-bright);
-      padding: 0.15rem 0.5rem;
-      margin-bottom: 1rem;
-      border: 1px solid rgba(139,0,0,0.4);
-      text-transform: uppercase;
-    }
-
     .member-role {
-      font-size: 0.75rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
       letter-spacing: 3px;
-      color: var(--bile-bright);
+      color: var(--tape);
       text-transform: uppercase;
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
+      border-left: 3px solid var(--rust);
+      padding-left: 0.6rem;
     }
 
     .member-desc {
-      font-size: 0.82rem;
-      line-height: 1.8;
-      color: #777;
-      margin-bottom: 1.8rem;
-      min-height: 60px;
+      font-family: 'Special Elite', cursive;
+      font-size: 0.84rem;
+      line-height: 1.85;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      min-height: 80px;
     }
 
-    .member-links {
-      display: flex;
-      gap: 1rem;
-    }
+    .member-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
 
     .github-link {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
       font-size: 0.75rem;
+      font-weight: 600;
       letter-spacing: 2px;
-      color: var(--bile-bright);
+      color: var(--tape);
       text-decoration: none;
-      border: 1px solid rgba(74,124,0,0.4);
+      border: 1px solid var(--tape-dark);
       padding: 0.5rem 1rem;
       transition: all 0.2s;
+      text-transform: uppercase;
     }
 
     .github-link:hover {
-      background: rgba(74,124,0,0.1);
-      box-shadow: var(--glow-green);
+      background: rgba(212,168,67,0.08);
+      border-color: var(--tape);
+      box-shadow: var(--glow-warn);
     }
 
     .github-ph {
-      color: #444;
-      border-color: #333;
+      color: var(--text-dim);
+      border-color: var(--iron-light);
       pointer-events: none;
     }
 
     /* ── FOOTER ── */
     footer {
-      background: #080808;
-      border-top: 1px solid rgba(139,0,0,0.2);
-      padding: 2rem;
+      background: #070605;
+      border-top: none;
+      padding: 0;
+    }
+
+    .footer-hazard {
+      height: 18px;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--warn) 0px,
+        var(--warn) 14px,
+        var(--iron) 14px,
+        var(--iron) 28px
+      );
+      opacity: 0.5;
+    }
+
+    .footer-inner {
+      padding: 2.5rem 2rem;
       text-align: center;
     }
 
     .footer-logo {
-      font-family: 'Creepster', cursive;
-      font-size: 2rem;
-      color: var(--blood);
-      letter-spacing: 4px;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2.2rem;
+      color: var(--rust-dark);
+      letter-spacing: 10px;
       margin-bottom: 0.5rem;
     }
 
     .footer-sub {
+      font-family: 'Special Elite', cursive;
       font-size: 0.7rem;
       letter-spacing: 3px;
-      color: #333;
+      color: var(--text-dim);
+      opacity: 0.6;
+    }
+
+    /* ── SCREENSHOTS ── */
+    #screenshots {
+      background:
+        repeating-linear-gradient(
+          180deg,
+          transparent 0px,
+          transparent 18px,
+          rgba(0,0,0,0.1) 18px,
+          rgba(0,0,0,0.1) 20px
+        ),
+        linear-gradient(180deg, #0a0908, #0f0e0a);
+    }
+
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 6px;
+    }
+
+    .screenshot-slot {
+      position: relative;
+      border: 2px solid var(--iron-light);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      background: #0a0908;
+      transition: border-color 0.2s;
+    }
+
+    .screenshot-slot:hover { border-color: var(--rust); }
+
+    .screenshot-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .screenshot-slot:hover img { transform: scale(1.03); }
+
+    /* 4th screenshot spans all 3 columns */
+    .screenshot-wide {
+      grid-column: 1 / -1;
+      aspect-ratio: 21 / 9;
+    }
+
+    /* Placeholder shown when no image yet */
+    .screenshot-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: 2px dashed rgba(139,58,26,0.3);
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 10px,
+        rgba(139,58,26,0.04) 10px,
+        rgba(139,58,26,0.04) 20px
+      );
+    }
+
+    .ss-icon { font-size: 2rem; opacity: 0.3; }
+
+    .ss-label {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+    }
+
+    .ss-hint {
+      font-family: 'Special Elite', cursive;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--rust-dark);
       text-transform: uppercase;
+    }
+
+    /* Corner bolt overlays on each slot */
+    .screenshot-slot::before,
+    .screenshot-slot::after {
+      content: '◈';
+      position: absolute;
+      color: var(--rust-dark);
+      font-size: 0.7rem;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .screenshot-slot::before { top: 4px; left: 6px; }
+    .screenshot-slot::after  { bottom: 4px; right: 6px; }
+
+    /* Rust bar on hover */
+    .screenshot-slot .slot-hover-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rust-dark), var(--rust-bright), var(--rust-dark));
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      z-index: 3;
+    }
+    .screenshot-slot:hover .slot-hover-bar { transform: scaleX(1); }
+
+    @media (max-width: 768px) {
+      .screenshots-grid { grid-template-columns: 1fr; }
+      .screenshot-wide  { grid-column: 1; aspect-ratio: 16/9; }
     }
 
     /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0a0a0a; }
-    ::-webkit-scrollbar-thumb { background: var(--blood); border-radius: 3px; }
+    ::-webkit-scrollbar-track { background: var(--soot); }
+    ::-webkit-scrollbar-thumb { background: var(--rust-dark); border-radius: 0; }
 
-    /* ── DIVIDER ── */
-    .blood-divider {
-      text-align: center;
-      color: var(--blood);
-      font-size: 1.5rem;
-      letter-spacing: 4px;
-      opacity: 0.4;
-      margin: 2rem 0;
-    }
-
-    /* ── ALERT STRIP ── */
-    .alert-strip {
-      background: var(--blood);
-      color: #fff;
-      text-align: center;
-      padding: 0.6rem 1rem;
-      font-size: 0.7rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    .alert-inner {
-      display: inline-block;
-      animation: marquee 18s linear infinite;
-    }
-
-    @keyframes marquee {
-      from { transform: translateX(100vw); }
-      to   { transform: translateX(-100%); }
-    }
-
-    /* Responsive */
     @media (max-width: 640px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { gap: 1.2rem; }
-      .nav-links a { font-size: 0.65rem; letter-spacing: 1px; }
+      .nav-links a { font-size: 0.6rem; letter-spacing: 1px; }
       section { padding: 4rem 1.2rem; }
+      .hero-title { letter-spacing: 6px; }
+      .download-box { padding: 2.5rem 1.5rem; }
+      .member-card { padding: 2rem 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ALERT BAR -->
-  <div class="alert-strip">
-    <span class="alert-inner">
-      ☣ DANGER — ZOMBIE OUTBREAK DETECTED — SURVIVE AT ALL COSTS — FIND THE EXIT — DO NOT LET THEM IN — ☣ &nbsp;&nbsp;&nbsp; ☣ DANGER — ZOMBIE OUTBREAK DETECTED — SURVIVE AT ALL COSTS — FIND THE EXIT — DO NOT LET THEM IN — ☣
-    </span>
-  </div>
-
   <!-- NAV -->
   <nav>
-    <div class="nav-logo">☣ DEAD ZONE</div>
+    <div class="nav-logo">
+      <span class="lock-icon">🔒</span>
+      LOCKDOWN
+    </div>
     <ul class="nav-links">
       <li><a href="#how-to-play">How to Play</a></li>
+      <li><a href="#screenshots">Screenshots</a></li>
       <li><a href="#download">Download</a></li>
       <li><a href="#team">The Team</a></li>
     </ul>
@@ -717,93 +1097,163 @@
   <section id="hero">
     <div class="hero-bg"></div>
 
-    <!-- Drip effect -->
-    <div class="drip-container">
-      <div class="drip" style="width:3px; height:60px; margin-left:8%; animation-duration:4s; animation-delay:0s;"></div>
-      <div class="drip" style="width:5px; height:45px; margin-left:15%; animation-duration:5s; animation-delay:1s;"></div>
-      <div class="drip" style="width:2px; height:70px; margin-left:27%; animation-duration:3.5s; animation-delay:0.5s;"></div>
-      <div class="drip" style="width:6px; height:35px; margin-left:40%; animation-duration:6s; animation-delay:2s;"></div>
-      <div class="drip" style="width:3px; height:55px; margin-left:55%; animation-duration:4.5s; animation-delay:0.8s;"></div>
-      <div class="drip" style="width:4px; height:65px; margin-left:68%; animation-duration:5.5s; animation-delay:1.5s;"></div>
-      <div class="drip" style="width:2px; height:40px; margin-left:80%; animation-duration:3.8s; animation-delay:0.3s;"></div>
-      <div class="drip" style="width:5px; height:50px; margin-left:92%; animation-duration:4.2s; animation-delay:1.8s;"></div>
+    <!-- Rebar lines -->
+    <div class="rebar" style="left:10%; opacity:0.3;"></div>
+    <div class="rebar" style="left:25%; opacity:0.2;"></div>
+    <div class="rebar" style="left:50%; opacity:0.15;"></div>
+    <div class="rebar" style="left:75%; opacity:0.2;"></div>
+    <div class="rebar" style="left:90%; opacity:0.25;"></div>
+
+    <!-- Boarded planks at bottom -->
+    <div class="planks">
+      <div class="plank" style="bottom:130px; transform:rotate(-1.2deg); opacity:0.85;"></div>
+      <div class="plank" style="bottom:97px;  transform:rotate(0.5deg);  opacity:0.9;"></div>
+      <div class="plank" style="bottom:64px;  transform:rotate(-0.8deg); opacity:0.8;"></div>
+      <div class="plank" style="bottom:31px;  transform:rotate(1deg);    opacity:0.75;"></div>
+      <div class="plank" style="bottom:0px;   transform:rotate(0deg);    opacity:0.9;"></div>
     </div>
 
-    <div class="hero-eyecatch">☣ &nbsp; Escape the Undead &nbsp; ☣</div>
-    <h1 class="hero-title">DEAD<br>ZONE</h1>
-    <div class="hero-subtitle">— Survive. Escape. Live. —</div>
-    <p class="hero-desc">
-      The dead have risen. The facility is overrun. You have one objective —
-      find the exit before the horde closes in. Every door you unlock, every
-      puzzle you solve, every second you waste brings them closer.
-    </p>
-    <div class="hero-btns">
-      <a href="#how-to-play" class="btn btn-primary">▶ How to Play</a>
-      <a href="#download" class="btn btn-secondary">⬇ Download <span class="soon-badge">SOON</span></a>
-    </div>
+    <!-- X brace SVG -->
+    <svg class="x-brace" viewBox="0 0 1200 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <line x1="0" y1="0" x2="1200" y2="160" stroke="#4A2A10" stroke-width="8"/>
+      <line x1="1200" y1="0" x2="0" y2="160" stroke="#4A2A10" stroke-width="8"/>
+    </svg>
 
-    <!-- Zombie silhouettes -->
-    <div class="zombie-silhouette">
-      <span class="zom">🧟</span>
-      <span class="zom">🧟‍♀️</span>
-      <span class="zom">🧟</span>
-      <span class="zom">🧟‍♂️</span>
-      <span class="zom">🧟</span>
+    <div class="hero-content">
+      <div class="hero-alert">
+        <span class="blink"></span>
+        Emergency Protocol Active — No Way Out
+        <span class="blink"></span>
+      </div>
+
+      <h1 class="hero-title">LOCKDOWN</h1>
+
+      <div class="hero-tagline">— Trapped. Hunted. Survive. —</div>
+
+      <p class="hero-desc">
+        You barricaded yourself inside when the outbreak hit. Smart move — until the
+        food ran out. Now the walls are thin, the horde outside is growing, and something
+        in the building has started thinking. Load up. Scavenge every floor. Find a way out.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#how-to-play" class="btn btn-primary">▶ How to Play</a>
+        <a href="#download"    class="btn btn-secondary">⬇ Download <span class="badge-soon">SOON</span></a>
+      </div>
     </div>
   </section>
 
-  <!-- HOW TO PLAY -->
+  <div class="rust-divider"></div>
+
+  <!-- SCREENSHOTS -->
+  <section id="screenshots">
+    <div class="section-inner">
+      <div class="section-eyebrow">In-Game</div>
+      <h2 class="section-title">Screenshots</h2>
+      <p style="font-family:'Special Elite',cursive; font-size:0.88rem; color:var(--text-dim); margin-bottom:2.5rem; line-height:1.8;">
+        A look inside the building. Every floor darker than the last.
+      </p>
+
+      <div class="screenshots-grid">
+
+        <div class="screenshot-slot">
+          <!-- REPLACE: add <img src="screenshot1.png" alt="Screenshot 1"> and remove the placeholder div -->
+          <div class="screenshot-placeholder">
+            <span class="ss-icon">📷</span>
+            <span class="ss-label">Screenshot 01</span>
+            <span class="ss-hint">Replace with your image</span>
+          </div>
+          <div class="slot-hover-bar"></div>
+        </div>
+
+        <div class="screenshot-slot">
+          <div class="screenshot-placeholder">
+            <span class="ss-icon">📷</span>
+            <span class="ss-label">Screenshot 02</span>
+            <span class="ss-hint">Replace with your image</span>
+          </div>
+          <div class="slot-hover-bar"></div>
+        </div>
+
+        <div class="screenshot-slot">
+          <div class="screenshot-placeholder">
+            <span class="ss-icon">📷</span>
+            <span class="ss-label">Screenshot 03</span>
+            <span class="ss-hint">Replace with your image</span>
+          </div>
+          <div class="slot-hover-bar"></div>
+        </div>
+
+        <div class="screenshot-slot screenshot-wide">
+          <div class="screenshot-placeholder">
+            <span class="ss-icon">📷</span>
+            <span class="ss-label">Screenshot 04 — Wide</span>
+            <span class="ss-hint">Replace with your image — spans full width</span>
+          </div>
+          <div class="slot-hover-bar"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="rust-divider"></div>
   <section id="how-to-play">
     <div class="section-inner">
-      <div class="section-label">Mission Briefing</div>
+      <div class="section-eyebrow">Mission Briefing</div>
       <h2 class="section-title">How to Play</h2>
+
       <p class="gameplay-intro">
-        <!-- EDIT THIS: Replace with your actual game description -->
-        DEAD ZONE is a top-down escape game where you must navigate through
-        a zombie-infested facility. Solve environmental puzzles, scavenge for
-        supplies, avoid or eliminate threats, and find the emergency exit before
-        you're overwhelmed. One wrong move could be your last.
+        LOCKDOWN is a top-down shooter set inside a crumbling apartment complex overrun by the
+        undead. You made the call to hole up and wait it out — but supplies are gone, the groaning
+        outside your door is getting louder, and the horde isn't just growing. It's organizing.
+        Gear up, scavenge every floor, and shoot your way to the exit before whatever is leading
+        them finds you first.
       </p>
 
       <div class="steps-grid">
 
         <div class="step-card">
-          <div class="step-num">01</div>
-          <div class="step-icon">🗺️</div>
-          <div class="step-title">Navigate the Facility</div>
+          <span class="step-num">01</span>
+          <span class="step-icon">🏚️</span>
+          <div class="step-title">Explore the Building</div>
           <p class="step-desc">
-            <!-- EDIT: Replace with actual gameplay step -->
-            Move through dark corridors and locked rooms. The facility layout is randomized — no two runs are the same. Study your surroundings carefully.
+            Push through dark hallways, flooded basements, and barricaded stairwells.
+            Your apartment complex is massive — and most of it hasn't been touched since
+            Day One. Every room could hold answers, or something worse.
           </p>
         </div>
 
         <div class="step-card">
-          <div class="step-num">02</div>
-          <div class="step-icon">🧩</div>
-          <div class="step-title">Solve the Puzzles</div>
+          <span class="step-num">02</span>
+          <span class="step-icon">🎒</span>
+          <div class="step-title">Scavenge for Supplies</div>
           <p class="step-desc">
-            <!-- EDIT: Replace with actual gameplay step -->
-            Doors won't open without a reason. Find clues, activate terminals, and solve the mysteries left behind before the outbreak consumed everything.
+            Ammo. Food. Weapons. Anything left behind by people who didn't make it.
+            Raid abandoned units, check every cabinet and crate — running dry in the
+            middle of a horde is not a mistake you get to make twice.
           </p>
         </div>
 
         <div class="step-card">
-          <div class="step-num">03</div>
-          <div class="step-icon">🧟</div>
-          <div class="step-title">Avoid the Horde</div>
+          <span class="step-num">03</span>
+          <span class="step-icon">🧟</span>
+          <div class="step-title">Avoid the Infected</div>
           <p class="step-desc">
-            <!-- EDIT: Replace with actual gameplay step -->
-            Zombies react to sound and movement. Stay quiet, stay hidden, or find weapons to fight back — but ammunition is scarce. Choose wisely.
+            They were your neighbors. Now they're a numbers problem. Slip past when
+            you can, shoot when you have to. Every bullet you waste is one less
+            you'll have when things get worse — and they will get worse.
           </p>
         </div>
 
         <div class="step-card">
-          <div class="step-num">04</div>
-          <div class="step-icon">🚪</div>
-          <div class="step-title">Find the Exit</div>
+          <span class="step-num">04</span>
+          <span class="step-icon">🧠</span>
+          <div class="step-title">Something Has Evolved</div>
           <p class="step-desc">
-            <!-- EDIT: Replace with actual gameplay step -->
-            The emergency exit is sealed. Gather the keycards, restore the power, and make your run for it before the horde breaks through the final barricade.
+            The horde doesn't wander anymore. It waits. It herds. Something deep
+            in the building has changed — and it knows you're trying to leave.
+            Find the exit before it finds you.
           </p>
         </div>
 
@@ -813,90 +1263,78 @@
       <div class="controls-wrapper">
         <div class="controls-title">⌨ Controls</div>
         <div class="controls-grid">
-          <!-- EDIT: Update keys and descriptions to match your game -->
           <div class="control-item">
             <span class="key">W A S D</span>
             <span class="control-label">Move character</span>
           </div>
           <div class="control-item">
-            <span class="key">E</span>
-            <span class="control-label">Interact / Pick up</span>
-          </div>
-          <div class="control-item">
-            <span class="key">LMB</span>
-            <span class="control-label">Attack / Use item</span>
-          </div>
-          <div class="control-item">
-            <span class="key">RMB</span>
+            <span class="key">MOUSE</span>
             <span class="control-label">Aim</span>
           </div>
           <div class="control-item">
-            <span class="key">SHIFT</span>
-            <span class="control-label">Sprint</span>
-          </div>
-          <div class="control-item">
-            <span class="key">ESC</span>
-            <span class="control-label">Pause menu</span>
-          </div>
-          <div class="control-item">
-            <span class="key">TAB</span>
-            <span class="control-label">Open inventory</span>
-          </div>
-          <div class="control-item">
-            <span class="key">R</span>
-            <span class="control-label">Reload</span>
+            <span class="key">LMB</span>
+            <span class="control-label">Shoot</span>
           </div>
         </div>
       </div>
 
     </div>
   </section>
+
+  <div class="rust-divider"></div>
 
   <!-- DOWNLOAD -->
   <section id="download">
     <div class="section-inner">
-      <div class="section-label">Get the Game</div>
+      <div class="section-eyebrow">Get the Game</div>
       <h2 class="section-title">Download</h2>
 
       <div class="download-box">
-        <div class="download-icon">💾</div>
-        <p style="font-size:0.9rem; color: var(--text); margin-bottom:1.5rem; line-height:1.7;">
-          The game is currently in development. Download links will be available once the first build is ready. Check back soon — the horde won't wait forever.
+        <div class="stripe-top"></div>
+        <span class="corner-bolt-tr">◈</span>
+        <span class="corner-bolt-bl">◈</span>
+
+        <span class="download-icon">💾</span>
+        <div class="download-status">⚠ Status: In Development</div>
+
+        <p class="download-text">
+          The game is currently being built. Once the first playable build
+          clears testing, download links will go live here. The lockdown
+          doesn't last forever — check back soon.
         </p>
 
         <div class="platform-badges">
-          <!-- EDIT: Remove platforms you won't support -->
-          <span class="badge">🪟 Windows</span>
-          <span class="badge">🍎 macOS</span>
-          <span class="badge">🐧 Linux</span>
+          <span class="platform-badge">🪟 Windows</span>
+          <span class="platform-badge">🍎 macOS</span>
         </div>
 
-        <!-- EDIT: Replace href="#" with actual download links when ready -->
-        <a href="#" class="btn btn-disabled" style="display:block; text-align:center;">
-          ⬇ Windows Build — Coming Soon
-        </a>
-        <br>
-        <a href="#" class="btn btn-disabled" style="display:block; text-align:center;">
-          ⬇ macOS Build — Coming Soon
-        </a>
+        <div class="download-btns">
+          <!-- EDIT: Replace href="#" with actual links when ready -->
+          <a href="#" class="btn btn-locked" style="text-align:center; display:block;">
+            ⬇ Windows Build — Coming Soon
+          </a>
+          <a href="#" class="btn btn-locked" style="text-align:center; display:block;">
+            ⬇ macOS Build — Coming Soon
+          </a>
+        </div>
 
         <p class="download-note">
-          <!-- EDIT: Update with real details -->
-          <span>Version:</span> TBA &nbsp;|&nbsp;
-          <span>Engine:</span> [Your Engine] &nbsp;|&nbsp;
-          <span>Size:</span> TBA
-          <br><br>
-          No account required. Just download, unzip, and survive.
+          <strong>Version:</strong> TBA &nbsp;·&nbsp;
+          <strong>Engine:</strong> [Your Engine] &nbsp;·&nbsp;
+          <strong>Size:</strong> TBA<br><br>
+          No account required. Download, unzip, survive.
         </p>
       </div>
 
     </div>
   </section>
 
+  <div class="rust-divider"></div>
+
   <!-- TEAM -->
   <section id="team">
     <div class="section-inner">
-      <div class="section-label">The Survivors</div>
+      <div class="section-eyebrow">The Survivors</div>
       <h2 class="section-title">Meet the Team</h2>
 
       <div class="team-grid">
@@ -906,39 +1344,32 @@
           <div class="member-avatar">🧑‍💻</div>
           <span class="placeholder-tag">✎ Edit This</span>
           <div class="member-name">Your Name Here</div>
-          <div class="member-role">
-            <!-- EDIT: e.g. Game Designer · Programmer -->
-            Role / Responsibilities
-          </div>
+          <div class="member-role">Role / Responsibilities</div>
           <p class="member-desc">
-            <!-- EDIT: Write a short bio or describe what you worked on -->
-            Short description of your contributions to the project. What did you build? What systems were you responsible for?
+            <!-- EDIT: Short bio — what did you build, what were you responsible for? -->
+            Short description of your contributions. What systems did you build?
+            What mechanics were yours? Fill this in before the defense.
           </p>
           <div class="member-links">
-            <!-- EDIT: Replace # with your actual GitHub profile URL -->
-            <a href="#" class="github-link github-ph">
-              ⌥ GitHub Profile
-            </a>
+            <!-- EDIT: Replace # with your GitHub profile URL -->
+            <a href="#" class="github-link github-ph">⌥ GitHub Profile</a>
           </div>
         </div>
 
-        <!-- MEMBER 2 — YOUR TEAMMATE EDITS THIS -->
+        <!-- MEMBER 2 — Cris Jay -->
         <div class="member-card">
           <div class="member-avatar">🧑‍🎨</div>
-          <span class="placeholder-tag">✎ Assistand Dev</span>
+          <span class="placeholder-tag">Assistant Dev</span>
           <div class="member-name">Cris Jay Hubilla</div>
-          <div class="member-role">
-            <!-- EDIT: e.g. Artist · Level Designer -->
-            Role / Responsibilities
-          </div>
+          <div class="member-role">Game Dev · Design</div>
           <p class="member-desc">
-            <!-- EDIT: Teammate fills in their own bio and contributions -->
-            Creating a game is an exciting journey that requires passion, creativity, and dedication. While it may seem like a massive task, having the right partner makes all the difference. I am currently working on developing a game alongside one dedicated teammate. Together, we combine our unique skills and ideas to bring our vision to life.
+            Building a game takes passion, creativity, and a dedicated partner.
+            Working alongside one teammate, combining unique skills and ideas
+            to bring the vision of LOCKDOWN to life — one commit at a time.
           </p>
           <div class="member-links">
-            <!-- EDIT: Replace # with teammate's actual GitHub profile URL -->
-            <a href="https://github.com/CrisJayHubilla" class="https://github.com">
-              ⌥ https://github.com/CrisJayHubilla
+            <a href="https://github.com/CrisJayHubilla" class="github-link" target="_blank" rel="noopener">
+              ⌥ github.com/CrisJayHubilla
             </a>
           </div>
         </div>
@@ -949,11 +1380,15 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">☣ DEAD ZONE</div>
-    <div class="footer-sub">
-      <!-- EDIT: Add your course/class name or school if needed -->
-      Made with 🩸 by [TEAM PANGAT] &nbsp;·&nbsp; [BSIT GAMEDEVELOPMENT] &nbsp;·&nbsp; [2nd Year]
+    <div class="footer-hazard"></div>
+    <div class="footer-inner">
+      <div class="footer-logo">🔒 LOCKDOWN</div>
+      <div class="footer-sub">
+        <!-- EDIT: Update with your team name, course, year -->
+        Made with rust &amp; grit by [TEAM PANGAT] &nbsp;·&nbsp; BSIT GAME DEVELOPMENT &nbsp;·&nbsp; 2nd Year
+      </div>
     </div>
+    <div class="footer-hazard"></div>
   </footer>
 
 </body>
