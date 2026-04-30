@@ -823,6 +823,14 @@
       font-size: 2rem;
       margin-bottom: 1.5rem;
       position: relative;
+      overflow: hidden;
+    }
+
+    .member-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     /* Bolt corners on avatar */
@@ -964,7 +972,6 @@
     .screenshots-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
       gap: 6px;
     }
 
@@ -975,6 +982,7 @@
       aspect-ratio: 16 / 9;
       background: #0a0908;
       transition: border-color 0.2s;
+      cursor: zoom-in;
     }
 
     .screenshot-slot:hover { border-color: var(--rust); }
@@ -983,55 +991,54 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center top;
       display: block;
       transition: transform 0.3s;
     }
 
-    .screenshot-slot:hover img { transform: scale(1.03); }
+    .screenshot-slot:hover img { transform: scale(1.05); }
+
+    .screenshot-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0.6rem 1rem;
+      background: linear-gradient(to top, rgba(13,12,9,0.92), transparent);
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      color: var(--bone);
+      text-transform: uppercase;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .screenshot-slot:hover .screenshot-caption { opacity: 1; }
+
+    .expand-hint {
+      position: absolute;
+      top: 0.5rem; right: 0.5rem;
+      font-size: 0.65rem;
+      color: var(--bone);
+      background: rgba(13,12,9,0.75);
+      border: 1px solid var(--iron-light);
+      padding: 0.2rem 0.5rem;
+      letter-spacing: 1px;
+      font-family: 'Special Elite', cursive;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .screenshot-slot:hover .expand-hint { opacity: 1; }
 
     /* 4th screenshot spans all 3 columns */
     .screenshot-wide {
       grid-column: 1 / -1;
-      aspect-ratio: 21 / 9;
+      aspect-ratio: 16 / 6;
     }
 
-    /* Placeholder shown when no image yet */
-    .screenshot-placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      border: 2px dashed rgba(139,58,26,0.3);
-      background: repeating-linear-gradient(
-        -45deg,
-        transparent 0px,
-        transparent 10px,
-        rgba(139,58,26,0.04) 10px,
-        rgba(139,58,26,0.04) 20px
-      );
-    }
-
-    .ss-icon { font-size: 2rem; opacity: 0.3; }
-
-    .ss-label {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1rem;
-      letter-spacing: 3px;
-      color: var(--text-dim);
-    }
-
-    .ss-hint {
-      font-family: 'Special Elite', cursive;
-      font-size: 0.65rem;
-      letter-spacing: 2px;
-      color: var(--rust-dark);
-      text-transform: uppercase;
-    }
-
-    /* Corner bolt overlays on each slot */
+    /* Corner bolt overlays */
     .screenshot-slot::before,
     .screenshot-slot::after {
       content: '◈';
@@ -1055,6 +1062,60 @@
       z-index: 3;
     }
     .screenshot-slot:hover .slot-hover-bar { transform: scaleX(1); }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(7,6,5,0.96);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox.active { display: flex; }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 92vw;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox-inner img {
+      max-width: 92vw;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+      border: 2px solid var(--rust-dark);
+      box-shadow: 0 0 80px rgba(0,0,0,0.9);
+    }
+
+    .lightbox-caption {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 0.95rem;
+      letter-spacing: 5px;
+      color: var(--text-dim);
+      text-align: center;
+      margin-top: 0.8rem;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -2.2rem; right: 0;
+      font-family: 'Bebas Neue', cursive;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      color: var(--rust-bright);
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+    }
+    .lightbox-close:hover { color: var(--bone); }
 
     @media (max-width: 768px) {
       .screenshots-grid { grid-template-columns: 1fr; }
@@ -1156,40 +1217,31 @@
 
       <div class="screenshots-grid">
 
-        <div class="screenshot-slot">
-          <!-- REPLACE: add <img src="screenshot1.png" alt="Screenshot 1"> and remove the placeholder div -->
-          <div class="screenshot-placeholder">
-            <span class="ss-icon">📷</span>
-            <span class="ss-label">Screenshot 01</span>
-            <span class="ss-hint">Replace with your image</span>
-          </div>
+        <div class="screenshot-slot" onclick="openLightbox('assets/BG/EXPLORE.png','Explore')">
+          <img src="assets/BG/EXPLORE.png" alt="Explore the building">
+          <div class="expand-hint">⤢ VIEW</div>
+          <div class="screenshot-caption">Explore</div>
           <div class="slot-hover-bar"></div>
         </div>
 
-        <div class="screenshot-slot">
-          <div class="screenshot-placeholder">
-            <span class="ss-icon">📷</span>
-            <span class="ss-label">Screenshot 02</span>
-            <span class="ss-hint">Replace with your image</span>
-          </div>
+        <div class="screenshot-slot" onclick="openLightbox('assets/BG/FIGHT.png','Fight')">
+          <img src="assets/BG/FIGHT.png" alt="Fight the infected">
+          <div class="expand-hint">⤢ VIEW</div>
+          <div class="screenshot-caption">Fight</div>
           <div class="slot-hover-bar"></div>
         </div>
 
-        <div class="screenshot-slot">
-          <div class="screenshot-placeholder">
-            <span class="ss-icon">📷</span>
-            <span class="ss-label">Screenshot 03</span>
-            <span class="ss-hint">Replace with your image</span>
-          </div>
+        <div class="screenshot-slot" onclick="openLightbox('assets/BG/RUN.png','Run')">
+          <img src="assets/BG/RUN.png" alt="Run for your life">
+          <div class="expand-hint">⤢ VIEW</div>
+          <div class="screenshot-caption">Run</div>
           <div class="slot-hover-bar"></div>
         </div>
 
-        <div class="screenshot-slot screenshot-wide">
-          <div class="screenshot-placeholder">
-            <span class="ss-icon">📷</span>
-            <span class="ss-label">Screenshot 04 — Wide</span>
-            <span class="ss-hint">Replace with your image — spans full width</span>
-          </div>
+        <div class="screenshot-slot screenshot-wide" onclick="openLightbox('assets/BG/HOPEISLOST.png','Hope Is Lost')">
+          <img src="assets/BG/HOPEISLOST.png" alt="Hope Is Lost">
+          <div class="expand-hint">⤢ VIEW</div>
+          <div class="screenshot-caption">Hope Is Lost</div>
           <div class="slot-hover-bar"></div>
         </div>
 
@@ -1275,6 +1327,10 @@
             <span class="key">LMB</span>
             <span class="control-label">Shoot</span>
           </div>
+          <div class="control-item">
+            <span class="key">ESC</span>
+            <span class="control-label">Pause / Menu</span>
+          </div>
         </div>
       </div>
 
@@ -1339,19 +1395,21 @@
 
       <div class="team-grid">
 
-        <!-- MEMBER 1 — EDIT THIS -->
+        <!-- MEMBER 1 -->
         <div class="member-card">
-          <div class="member-avatar">🧑‍💻</div>
-          <span class="placeholder-tag">Lead Dev</span>
+          <div class="member-avatar">
+            <img src="assets/BG/Tracericon.jpg" alt="Tracer Cadapan">
+          </div>
+          <span class="placeholder-tag">Project Lead</span>
           <div class="member-name">Tracer Cadapan</div>
-          <div class="member-role">Web Developer * Novice Game Designer</div>
+          <div class="member-role">Project Lead · Web Developer · Novice Game Designer </div>
           <p class="member-desc">
-            <!-- EDIT: Short bio — what did you build, what were you responsible for? -->
+            <!-- EDIT: Add your bio before the defense -->
             Every great game starts with a single line of code. I’ve spent the last few months transforming my initial HTML concepts into my very first game. To celebrate the launch, I built this space to share the development story, provide updates, and give you a behind-the-scenes look at the world I’m building. Thanks for being part of my first step into game development!
           </p>
           <div class="member-links">
-            <!-- EDIT: Replace # with your GitHub profile URL -->
-            <a href="#" class="github-link github-ph">⌥ GitHub Profile</a>
+            <!-- EDIT: Replace # with your GitHub URL -->
+            <a href="https://github.com/uphsdcadapantracers-art" class="github-link" target="_blank" rel="noopener">⌥github.com/uphsdcadapantracers-art</a>
           </div>
         </div>
 
@@ -1360,9 +1418,9 @@
           <div class="member-avatar">🧑‍🎨</div>
           <span class="placeholder-tag">Assistant Dev</span>
           <div class="member-name">Cris Jay Hubilla</div>
-          <div class="member-role">Website assistant</div>
+          <div class="member-role">Game Website assistant · Web Designer</div>
           <p class="member-desc">
-            I don’t just build systems; I find better ways to evolve them. I thrive at the intersection of technical execution and high-level strategy, frequently contributing actionable ideas to optimize workflows and scale infrastructure. With a natural inclination for roadmap development and proactive problem-solving, I specialize in turning "what if" into "here is the plan."
+             I don’t just build systems; I find better ways to evolve them. I thrive at the intersection of technical execution and high-level strategy, frequently contributing actionable ideas to optimize workflows and scale infrastructure. With a natural inclination for roadmap development and proactive problem-solving, I specialize in turning "what if" into "here is the plan."
           </p>
           <div class="member-links">
             <a href="https://github.com/CrisJayHubilla" class="github-link" target="_blank" rel="noopener">
@@ -1387,6 +1445,31 @@
     </div>
     <div class="footer-hazard"></div>
   </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-inner" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()">✕ CLOSE</button>
+      <img id="lightbox-img" src="" alt="">
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <script>
+    function openLightbox(src, caption) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-caption').textContent = caption;
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
 
 </body>
 </html>
